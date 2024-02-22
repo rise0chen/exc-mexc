@@ -1,0 +1,87 @@
+[package]
+authors = ["rise0chen"]
+description = "MEXC exchange services"
+edition = "2021"
+keywords = ["exchange", "tower", "mexc"]
+license = "MIT"
+name = "exc-mexc"
+readme = "./README.md"
+repository = ""
+version = "0.7.0"
+
+[features]
+default = ["rustls-tls"]
+native-tls = ["exc-core/native-tls", "tokio-tungstenite/native-tls"]
+prefer-client-id = []
+rustls-tls = [
+  "exc-core/rustls-tls",
+  "tokio-tungstenite/rustls-tls-webpki-roots",
+]
+
+[dependencies]
+anyhow = {version = "1"}
+async-stream = {version = "0.3"}
+atomic-waker = "1.0.0"
+base64 = "0.21.5"
+cfg-if = {version = "1"}
+either = {version = "1"}
+futures = {version = "0.3"}
+hex = "0.4"
+hmac = {version = "0.12"}
+http = {version = "0.2"}
+md-5 = {version = "0.10"}
+num_enum = {version = "0.7"}
+pin-project-lite = {version = "0.2"}
+rust_decimal = {version = "1"}
+serde_json = {version = "1"}
+serde_urlencoded = "0.7"
+serde_with = {version = "3"}
+sha2 = {version = "0.10"}
+thiserror = {version = "1"}
+tokio-tower = {version = "0.6"}
+tracing = {version = "0.1"}
+
+[dependencies.serde]
+features = ["derive"]
+version = "1"
+
+[dependencies.exc-core]
+default-features = false
+features = ["websocket", "driven", "http", "retry", "fetch-candles", "limit"]
+version = "0.7"
+
+[dependencies.tower]
+features = ["util", "reconnect", "buffer", "timeout", "retry", "ready-cache"]
+version = "0.4"
+
+[dependencies.tokio-tungstenite]
+version = "0.20"
+
+[dependencies.tokio]
+features = ["sync", "rt-multi-thread", "time", "macros"]
+version = "1"
+
+[dependencies.tokio-stream]
+features = ["time"]
+version = "0.1"
+
+[dependencies.time]
+features = ["serde-human-readable", "macros"]
+version = "0.3"
+
+[dependencies.hyper]
+features = ["client", "http1"]
+version = "0.14"
+
+[dependencies.uuid]
+features = ["v4"]
+version = "1"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dev-dependencies]
+clap = {version = "4.0.24", features = ["derive", "env"]}
+dotenvy = {version = "0.15"}
+tracing-subscriber = {version = "0.3.16", features = ["env-filter", "json"]}
