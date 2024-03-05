@@ -10,6 +10,7 @@ use serde_with::{serde_as, FromInto};
 #[serde(rename_all = "camelCase")]
 pub struct PlaceOrderRequest {
     pub symbol: String,
+    pub external_oid: Option<String>,
     #[serde_as(as = "FromInto<i8>")]
     pub side: OrderSide,
     #[serde_as(as = "FromInto<i8>")]

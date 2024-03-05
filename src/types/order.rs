@@ -1,5 +1,13 @@
+use exc_core::Symbol;
 use num_enum::{FromPrimitive, IntoPrimitive};
 use serde::{Deserialize, Serialize};
+
+#[derive(Debug)]
+pub struct OrderId {
+    pub symbol: Symbol,
+    pub order_id: Option<String>,
+    pub custom_order_id: Option<String>,
+}
 
 #[derive(Debug)]
 pub struct Order {

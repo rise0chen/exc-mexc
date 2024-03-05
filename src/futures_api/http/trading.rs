@@ -6,7 +6,12 @@ use serde_with::{serde_as, FromInto};
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetOrderRequest {
-    pub order_id: String,
+    #[serde(skip)]
+    pub symbol: String,
+    #[serde(skip)]
+    pub order_id: Option<String>,
+    #[serde(skip)]
+    pub external_oid: Option<String>,
 }
 
 #[serde_as]
@@ -15,6 +20,7 @@ pub struct GetOrderRequest {
 pub struct GetOrderResponse {
     pub symbol: String,
     pub order_id: String,
+    pub external_oid: Option<String>,
     pub price: f64,
     pub vol: f64,
     pub deal_vol: f64,
@@ -37,7 +43,13 @@ impl Rest for GetOrderRequest {
         Method::GET
     }
     fn path(&self) -> String {
-        format!("/api/v1/private/order/get/{}", self.order_id)
+        if let Some(id) = &self.order_id {
+            return format!("/api/v1/private/order/get/{}", id);
+        }
+        if let Some(id) = &self.external_oid {
+            return format!("/api/v1/private/order/external/{}/{}", self.symbol, id);
+        }
+        String::new()
     }
     fn need_sign(&self) -> bool {
         true
