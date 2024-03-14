@@ -2,6 +2,27 @@ use exc_core::Symbol;
 use num_enum::{FromPrimitive, IntoPrimitive};
 use serde::{Deserialize, Serialize};
 
+#[derive(Debug, Clone)]
+pub struct PlaceOrderRequest {
+    pub size: f64,
+    pub price: f64,
+    pub kind: OrderType,
+    pub leverage: f64,
+}
+impl PlaceOrderRequest {
+    pub fn new(size: f64, price: f64, kind: OrderType) -> Self {
+        Self {
+            size,
+            price,
+            kind,
+            leverage: 1.0,
+        }
+    }
+    pub fn set_leverage(&mut self, leverage: f64) {
+        self.leverage = leverage;
+    }
+}
+
 #[derive(Debug)]
 pub struct OrderId {
     pub symbol: Symbol,

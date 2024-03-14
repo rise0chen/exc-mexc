@@ -1,6 +1,3 @@
-use num_enum::{FromPrimitive, IntoPrimitive};
-use serde::{Deserialize, Serialize};
-
 #[derive(Debug)]
 pub struct BidAsk {
     /// (price, size)

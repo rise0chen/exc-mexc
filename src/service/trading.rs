@@ -1,10 +1,11 @@
 use super::Mexc;
-use crate::types::order::{FuturesOpenType, Order, OrderId, OrderSide, OrderType};
+use crate::types::order::{FuturesOpenType, Order, OrderId, OrderSide, PlaceOrderRequest};
 use exc_core::{ExchangeError, Symbol};
 use tower::ServiceExt;
 
 impl Mexc {
-    pub async fn place_order(&mut self, symbol: &Symbol, size: f64, price: f64, kind: OrderType) -> Result<OrderId, (OrderId, ExchangeError)> {
+    pub async fn place_order(&mut self, symbol: &Symbol, data: PlaceOrderRequest) -> Result<OrderId, (OrderId, ExchangeError)> {
+        let PlaceOrderRequest { size, price, kind, leverage } = data;
         let custom_id = format!(
             "{:08x?}{:08x?}{:016x?}",
             (price as f32).ln().to_bits(),
@@ -38,7 +39,7 @@ impl Mexc {
                 vol: size.abs(),
                 price,
                 open_type: FuturesOpenType::Isolated,
-                leverage: 10.0,
+                leverage,
             };
             self.oneshot(req).await.map(|resp| resp.order_id)
         };
