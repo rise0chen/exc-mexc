@@ -8,6 +8,7 @@ pub struct PlaceOrderRequest {
     pub price: f64,
     pub kind: OrderType,
     pub leverage: f64,
+    pub open_type: FuturesOpenType,
 }
 impl PlaceOrderRequest {
     pub fn new(size: f64, price: f64, kind: OrderType) -> Self {
@@ -16,10 +17,14 @@ impl PlaceOrderRequest {
             price,
             kind,
             leverage: 1.0,
+            open_type: FuturesOpenType::Cross,
         }
     }
     pub fn set_leverage(&mut self, leverage: f64) {
         self.leverage = leverage;
+    }
+    pub fn set_open_type(&mut self, open_type: FuturesOpenType) {
+        self.open_type = open_type;
     }
 }
 
